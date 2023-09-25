@@ -2,6 +2,7 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
+const formatMessage = require("./utils/messages");
 
 const app = express();
 const server = http.createServer(app);
@@ -21,9 +22,30 @@ app.use(express.json());
 // Use static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Run when client connects
-io.on('connection', socket => { // connect io to listen for connection
+
+const adminName = 'Lord Enzu';
+
+// Run when client connects, listen for connection  
+io.on('connection', socket => { 
     console.log("New websocket connection");
+
+    // Welcome User, broadcasts to single user
+    socket.emit('message', formatMessage(adminName, 'Welcome to talk to me!')); 
+
+    // To Broadcast message on user's connection to everyone but the user
+    socket.broadcast.emit('message', formatMessage (adminName, 'A User has joined the chat')); 
+
+    // io.emit(); // broadcasts to everyone in general
+
+    //Runs when client disconnects
+    socket.on('disconnect', ()=> {
+        io.emit('message', formatMessage( adminName, 'A User has left the chat.'))
+    })
+
+    // Listen for messages from chat
+    socket.on('chatMessage', (msg) => {
+        io.emit('message', formatMessage('USER', msg)); // emit to everyone
+    })
 })
 
 
@@ -33,6 +55,3 @@ server.listen(PORT, () => {
 })
 
 
-app.get('/', (req, res) => {
-    res.send("Yup, this runs on port 3k")
-})
