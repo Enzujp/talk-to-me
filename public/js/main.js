@@ -2,6 +2,7 @@ const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
+const leaveRoom = document.getElementById('leave-btn');
 
 
 // Get query params from search bar
@@ -64,7 +65,7 @@ function outputMessage(message) {
   document.querySelector('.chat-messages').appendChild(div);
 }
 
-// Add roomname to DOM
+// Add room to DOM
 function outputRoomName(room) {
   roomName.innerText = room;
 
@@ -76,3 +77,14 @@ function outputUsers(users) { // Turn array into string and output
   ${users.map(user => `<li>${user.username}</li>`).join('')} 
   `
 } 
+
+
+// Leave room 
+leaveRoom.addEventListener('click', () => {
+  const exitRoom = confirm("Confirm you want to exit room ");
+  if (exitRoom) {
+    window.location = '../index.html'
+  } else{
+
+  }
+})
