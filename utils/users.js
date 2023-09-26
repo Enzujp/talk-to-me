@@ -21,7 +21,7 @@ const getCurrentUser = (id) => {
 
 // User leaves chat
 const userLeave = (id) => {
-    const index = users.find(index=> user.id === id) // index returns a negative 1 if id value doesnt match users
+    const index = users.findIndex(user => user.id === id) // index returns a negative 1 if id value doesnt match users
     if (index  !== -1) {
         return users.splice(index, 1)[0];
     } 
