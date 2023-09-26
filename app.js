@@ -38,8 +38,7 @@ io.on('connection', socket => {
     // Welcome User, broadcasts to single user
     socket.emit('message', formatMessage(adminName, 'Welcome to talk to me!')); 
 
-    // To Broadcast message on user's connection to everyone but the user
-    //socket.broadcast.emit
+    //Alert room of a new member joining
     socket.broadcast.to(user.room).emit('message', formatMessage (adminName, `${user.username} has joined the chat`)); 
 
     // Users and room Info
@@ -56,7 +55,7 @@ io.on('connection', socket => {
     // Listen for messages from chat
     socket.on('chatMessage', (msg) => {
         io.emit('message', formatMessage('USER', msg)); // emit to everyone
-    })
+    });
 
     //Runs when client disconnects
     socket.on('disconnect', ()=> {
@@ -72,7 +71,7 @@ io.on('connection', socket => {
 
     });
     
-})
+}); 
 
 
 const PORT = process.env.PORT || 3000;

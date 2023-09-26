@@ -1,12 +1,9 @@
-const formatMessage = require("../../utils/messages");
-const { getCurrentUser } = require("../../utils/users");
-
-
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 const chatForm = document.getElementById('chat-form');
 
-const chatMessages = document.querySelector('.chat-messages')
+const chatMessages = document.querySelector('.chat-messages');
+
 
 // Get query params from search bar
 
@@ -75,7 +72,7 @@ function outputRoomName(room) {
 }
 
 // Add users to Dom 
-function outputUsers(users) { // Turn array into string and output
+function outputUsers(users) { // Turn array into string and output  
   userList.innerHTML = `
   ${users.map(user => `<li>${user.username}</li>`).join('')} 
   `
