@@ -10,12 +10,16 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server); // initialize socketio with server
 
+// set view engine
+app.set('view engine', 'ejs');
+
+
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const userRoutes = require("./src/routes/authRoutes");
+const authRoutes = require("./src/routes/authRoutes");
 
 
 // middlewares
@@ -23,10 +27,10 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json());
-app.use('/user', userRoutes);
+app.use(express.static(__dirname + "/public"));
+// routes to be used
+app.use('/user', authRoutes);
 
-// Use static files from public folder
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Database Connections
 const dbURI = "mongodb+srv://jahypee:babyboy@cluster0.whwk1gk.mongodb.net/";
@@ -44,4 +48,13 @@ server.listen(PORT, () => {
     console.log(" this app runs on port 3000");
 })
 
+app.get('/', (req, res) => {
+    res.render('index');
+})
 
+// app.get('/chat', (req, res) => {
+//     res.render('chat');
+// })
+
+// Use middleware to keep users from main chat app til they're logged in
+// Adjust css styling for chat containers

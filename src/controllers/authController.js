@@ -1,15 +1,18 @@
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
+const createToken = (id) => {
+    return jwt.sign({id}, process.env.SECRET_KEY, { expiresIn: '2h'});
+}
 
 module.exports.signup_get = (req, res) => {
     res.render("signup");
 }
 
-const createToken = (id) => {
-    return jwt.sign({id}, process.env.SECRET_KEY, { expiresIn: '2h'});
-}
+
 
 module.exports.signup_post = async (req, res) => {
     const { username, password } = req.body
@@ -19,7 +22,7 @@ module.exports.signup_post = async (req, res) => {
 
         if (existingUser) {
             res.status(409).json({
-                message: "This user already exists, try to Login instead"
+                message: "This user already exists, choose another username or try to Login instead"
             })
             res.redirect('login');
         }
@@ -27,7 +30,8 @@ module.exports.signup_post = async (req, res) => {
         const encryptedPassword = await bcrypt.hash(password, 10);
 
         // create user
-        const user = User.create({
+        const user = await User.create({
+            _id: new mongoose.Types.ObjectId,
             username: username,
             password: encryptedPassword
         })
@@ -37,9 +41,11 @@ module.exports.signup_post = async (req, res) => {
         
         // Return new User
         res.status(201).json({
-            messaege: "User successfully created",
-            user
+            user: user._id,
+            message: "User successfully created",
+            
         })
+        console.log(user)
 
     }
     catch(err) {
@@ -48,11 +54,35 @@ module.exports.signup_post = async (req, res) => {
 }
 
 
-module.exports.signin_get = (req, res) => {
-    res.render("signin");
+module.exports.login_get = (req, res) => {
+    res.render("login");
 }
 
-module.exports.signin_post = (req, res) => {
+module.exports.login_post = async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const user = await User.findOne({username: username})
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password)
+        if (auth) {
+            const token = createToken(user._id)
+            return res.status(200).json({
+                user: user,
+                message: "User logged in",
+                token: token
+            })
+        } else {
+            res.status(401).json({
+                message: "Incorrect Password"
+            })
+        }
+        
+    } else {
+        res.status(401).json({
+            message: "Incorrect Username"
+        })
+    }
     
 }
 

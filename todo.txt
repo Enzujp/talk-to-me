@@ -1,2 +1,25 @@
-add a database 
+add a database - done 
 Link user database in place of socket id
+copy files for signup and signin pages, html and css files and edit to taste
+apply signin signup features to file and link to app
+use popup package to display messages on signup and signin
+
+
+
+bla bla bla
+#667aff first color
+#7386ff second color
+
+
+
+dumplings from header.ejs
+
+  <% if (user) { %>
+        <li>Welcome, <%= user.username %></li>
+        <li><a href="/logout">Log Out</a></li>
+      <% }  else { %>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup" class="btn">Sign Up</a></li>
+        
+      <% } %>
+        

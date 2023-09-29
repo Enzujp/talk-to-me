@@ -1,8 +1,12 @@
+const mongoose = require("mongoose");
+const User = require("../src/models/User");
+
 const users = [];
 
 // Join User to chat 
 
 const userJoin = (id, username, room) => {
+    // create new instance of user model and embed user
     const user = {id, username, room};
 
     // append extracted user details to room

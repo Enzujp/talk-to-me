@@ -1,5 +1,6 @@
 const server = http.createServer(app);
 const io = socketio(server); // initialize socketio with server
+const User = require("./src/models/User");
 
 const adminName = 'Lord Enzu';
 const formatMessage = require("./utils/messages");
