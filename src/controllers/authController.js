@@ -24,7 +24,7 @@ module.exports.signup_post = async (req, res) => {
             res.status(409).json({
                 message: "This user already exists, choose another username or try to Login instead"
             })
-            res.redirect('login');
+            
         }
         // hash user password
         const encryptedPassword = await bcrypt.hash(password, 10);

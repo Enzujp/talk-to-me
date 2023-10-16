@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 // routes to be used
-app.use('/user', authRoutes);
+app.use(authRoutes);
 
 
 // Database Connections
