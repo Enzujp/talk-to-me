@@ -14,44 +14,41 @@ module.exports.signup_get = (req, res) => {
 
 
 
-module.exports.signup_post = async (req, res) => {
+module.exports.signup_post = async(req, res) => {
     const { username, password } = req.body
-    try{
-        // Check to see if User already exists
-        const existingUser = await User.findOne({username});
+    try {
+        const existingUser = await User.findOne({ username });
 
         if (existingUser) {
             res.status(409).json({
-                message: "This user already exists, choose another username or try to Login instead"
+                message: "A User with this account already exists, try to login instead"
             })
-            
         }
-        // hash user password
-        const encryptedPassword = await bcrypt.hash(password, 10);
+        else {
+            // hash new user password
+            const hashedPassword = await bcrypt.hash(password, 10)
+            // create user
+            const user = await User.create({
+                _id: new mongoose.Types.ObjectId,
+                username: username,
+                password: hashedPassword
+            })
 
-        // create user
-        const user = await User.create({
-            _id: new mongoose.Types.ObjectId,
-            username: username,
-            password: encryptedPassword
-        })
+            // create user token from generated id
+            const userToken = createToken(user._id);
 
-        // Create token using id from registered user
-        const token = createToken(user._id);
-        
-        // Return new User
-        res.status(201).json({
-            user: user._id,
-            message: "User successfully created",
-            
-        })
-        console.log(user)
-
-    }
-    catch(err) {
-        console.log(err);
+            res.status(201).json({
+                message: "User created Successfully",
+                user: user._id,
+            })
+            console.log(user)
+        }
+    } catch (err) {
+        console.log(err)
     }
 }
+
+
 
 
 module.exports.login_get = (req, res) => {
