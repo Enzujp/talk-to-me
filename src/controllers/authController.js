@@ -15,40 +15,48 @@ module.exports.signup_get = (req, res) => {
 
 
 module.exports.signup_post = async(req, res) => {
-    const { username, password } = req.body
-    try {
-        const existingUser = await User.findOne({ username });
-
-        if (existingUser) {
-            res.status(409).json({
-                message: "A User with this account already exists, try to login instead"
-            })
-        }
-        else {
-            // hash new user password
-            const hashedPassword = await bcrypt.hash(password, 10)
-            // create user
-            const user = await User.create({
-                _id: new mongoose.Types.ObjectId,
-                username: username,
-                password: hashedPassword
-            })
-
-            // create user token from generated id
-            const userToken = createToken(user._id);
-
-            res.status(201).json({
-                message: "User created Successfully",
-                user: user._id,
-            })
-            console.log(user)
-        }
-    } catch (err) {
-        console.log(err)
+    const username = req.body.username
+    const password = req.body.password
+    // const { username, password } = req.body;
+    const existingUser = await User.findOne({username})
+    if (existingUser) {
+        res.status(409).json({
+            message: "An account with this username already exists, choose a different username"
+        })
+    }
+    else {
+        bcrypt.hash(password, 10, (err, hash) => {
+            if (err) {
+                res.status(500).json({
+                    error: err,
+                    message: "find me here please"
+                })
+            }
+            else {
+                const user = new User({
+                    _id: new mongoose.Types.ObjectId,
+                    username: username,
+                    password: hash
+                })
+                user.save()
+                .then(result => {
+                    res.status(201).json({
+                        message: "User created successfully",
+                        user: user._id,
+                        password: hash
+                    })
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        err: err,
+                        message: "Find me here, I'm an error"
+                    })
+                })
+            }
+            
+        })
     }
 }
-
-
 
 
 module.exports.login_get = (req, res) => {
