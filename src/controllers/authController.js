@@ -92,5 +92,5 @@ module.exports.login_post = async (req, res) => {
 }
 
 module.exports.logout_get = (req, res) => {
-    console.log("This should hold");
+    // write a function that expires user token in milliseconds
 }

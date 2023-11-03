@@ -37,11 +37,11 @@
             headers: {'Content-Type': 'application/json'}
         })
         const data = await res.json();
-        console.log(data);
         if (data.errors) {
             usernameError.textContent = data.errors.username;
             passwordError.textContent = data.errors.password;
         }
+        console.log(data.user)
         if (data.user) {
             location.assign('/');
         }

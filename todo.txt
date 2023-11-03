@@ -23,3 +23,38 @@ dumplings from header.ejs
         
       <% } %>
         
+
+
+scratchings
+
+const username = req.body.username;
+    const password = req.body.password;
+
+    const user = await User.findOne({username: username})
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password)
+        if (auth) {
+            const token = createToken(user._id)
+            return res.status(200).json({
+                user: user,
+                message: "User logged in",
+                token: token
+            })
+        } else {
+            res.status(401).json({
+                message: "Incorrect Password"
+            })
+        }
+        
+    } else {
+        res.status(401).json({
+            message: "Incorrect Username"
+        })
+    }
+
+
+
+
+
+    // Thought process
+    The only thing I need to include in the ejs file is the User

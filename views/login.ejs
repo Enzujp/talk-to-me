@@ -33,18 +33,14 @@
 
     // try catch method to fetch details and grab errors if any
     try {
-      const res = await fetch('/login', {
+      const res = await fetch('login', {
         method: "POST",
         body: JSON.stringify({ username, password }),
-        headers: {"Content-Type" : "json/application" }
-      });
+        headers: {'Content-Type': 'application.json'}
+      })
       const data = res.json();
-      if (data.errors) {
-        usernameError.textContent = data.errors.username;
-        passwordError.textContent = data.errors.password;
-      }
       if (data.user) {
-        location.assign('index')
+        location.assign("/");
       }
     } catch (err) {
       console.log(err)
