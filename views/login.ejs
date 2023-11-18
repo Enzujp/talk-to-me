@@ -33,7 +33,7 @@
 
     // try catch method to fetch details and grab errors if any
     try {
-      const res = await fetch('login', {
+      const res = await fetch('/login', {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: {'Content-Type': 'application.json'}

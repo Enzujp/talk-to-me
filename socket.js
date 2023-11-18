@@ -20,7 +20,7 @@ io.on('connection', socket => {
 
     //Alert room of a new member joining
     socket.broadcast.to(user.room).emit('message', formatMessage (adminName, `${user.username} has joined the chat`)); 
-
+ 
     // Users and room Info
     io.to(user.room).emit('roomUsers', {
         room: user.room,
