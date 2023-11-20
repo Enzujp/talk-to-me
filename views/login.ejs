@@ -39,6 +39,10 @@
         headers: {'Content-Type': 'application/json'}
       })
       const data = res.json();
+      if (data.errors) {
+        usernameError.textContent = data.errors.username;
+        passwordError.textContent = data.errors.password;
+      }
       if (data.user) {
         location.assign("/");
       }
