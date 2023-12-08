@@ -65,7 +65,6 @@ module.exports.signup_post = async(req, res) => {
             if (err) {
                 res.status(500).json({
                     error: err,
-                    message: "find me here please"
                 })
             }
             else {
@@ -85,10 +84,7 @@ module.exports.signup_post = async(req, res) => {
                 .catch(err => {
                     const errors = handleErrors(err)
                     console.log(errors)
-                    res.status(500).json({
-                        errors: errors,
-                        message: "Find me here, I'm an error"
-                    })
+                    res.status(500).json(errors)
                 })
             }
             
