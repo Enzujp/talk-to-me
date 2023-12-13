@@ -82,9 +82,7 @@ module.exports.signup_post = async(req, res) => {
                     })
                 })
                 .catch(err => {
-                    const errors = handleErrors(err)
-                    console.log(errors)
-                    res.status(500).json(errors)
+                    console.log(err)
                 })
             }
             
