@@ -6,7 +6,7 @@ use popup package to display messages on signup and signin
 
 
 
-bla bla bla
+
 #667aff first color
 #7386ff second color
 
